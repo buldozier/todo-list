@@ -1,0 +1,26 @@
+@import "zero_styles.scss";
+@import "variables.scss";
+
+* {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-size: $fz;
+  background-color: $background-color;
+  @media screen and (min-width: 767px) {
+    font-size: $fz-m;
+  }
+
+  @media screen and (min-width: 992px) {
+    font-size: $fz-l;
+
+  }
+}
+
+.container {
+  margin: 0 auto;
+}
+
