@@ -10,3 +10,9 @@ export default {
   components: {},
 };
 </script>
+
+<style lang="scss" scoped>
+.home {
+  padding: $pg * 5;
+}
+</style>
