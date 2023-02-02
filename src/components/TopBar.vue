@@ -5,11 +5,9 @@
         <div class="top-bar-inner__main-menu">
           <div class="top-bar-inner__main-menu_btn"></div>
         </div>
-        <div class="top-bar-inner__home-btn">
-          <router-link to="/">
-            <img class="home-icon" src="../assets/icons/home.svg" alt="Домой" />
-          </router-link>
-        </div>
+        <router-link class="top-bar-inner__home-btn" to="/">
+          <img class="home-icon" src="../assets/icons/home.svg" alt="Домой" />
+        </router-link>
         <div class="top-bar-inner__search">
           <input class="fast-search" placeholder="Поиск задач..." />
           <div class="search-img">
@@ -28,7 +26,18 @@
           </div>
         </div>
       </div>
-      <div class="top-bar-inner__right"></div>
+      <div class="top-bar-inner__right">
+        <div class="top-bar-inner__add-task" @click="showModal">
+          <img
+            class="top-bar-inner__add-task_btn"
+            src="../assets/icons/plus.svg"
+            alt="Добавить задачу"
+          />
+        </div>
+        <div class="top-bar-inner__settings">
+          <img src="../assets/icons/gear.svg" alt="" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,6 +45,15 @@
 <script>
 export default {
   name: "TopBar",
+  components: {},
+  data() {
+    return {};
+  },
+  methods: {
+    showModal() {
+      this.$emit("showModal");
+    },
+  },
 };
 </script>
 
@@ -50,10 +68,15 @@ export default {
   justify-content: space-between;
   height: 100%;
   padding: 0 $pg * 5;
-  &__left {
+  &__left,
+  &__right {
     display: flex;
     align-items: center;
     gap: 25px;
+  }
+  & img {
+    width: 25px;
+    height: 25px;
   }
   &__main-menu {
     display: flex;
@@ -61,6 +84,11 @@ export default {
     width: 25px;
     height: 25px;
     cursor: pointer;
+    padding: $pg;
+    border-radius: 5px;
+    &:hover {
+      background-color: $main-color-2;
+    }
     &_btn {
       width: 25px;
       height: 3px;
@@ -86,6 +114,16 @@ export default {
       }
     }
   }
+  &__home-btn,
+  &__add-task,
+  &__settings {
+    padding: $pg;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: $main-color-2;
+    }
+  }
   &__search {
     position: relative;
     cursor: text;
@@ -102,6 +140,8 @@ export default {
     & .fast-search:focus {
       color: black;
       background-color: white;
+      width: 300px;
+
       &::placeholder {
         color: black;
       }
@@ -110,11 +150,6 @@ export default {
       }
     }
   }
-}
-
-.home-icon {
-  width: 25px;
-  height: 25px;
 }
 
 .search-icon {
@@ -133,7 +168,6 @@ export default {
 }
 
 .fast-search {
-  color: white;
   border: none;
   outline: none;
   position: relative;

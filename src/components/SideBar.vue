@@ -7,34 +7,34 @@
             <img src="../assets/icons/inbox.svg" alt="Inbox" />
             <span>Все задачи</span>
           </div>
-          <span>1</span>
+          <span>{{ taskCount ? taskCount : "" }}</span>
         </div>
       </router-link>
-      <router-link to="/about" class="router-link sidebar__link">
+      <router-link to="/today" class="router-link sidebar__link">
         <div class="sidebar__link-items">
           <div class="sidebar__items-left">
             <img src="../assets/icons/inbox.svg" alt="Inbox" />
-            <span>Все задачи</span>
+            <span>Сегодня</span>
           </div>
-          <span>1</span>
+          <span></span>
         </div>
       </router-link>
       <router-link to="/planning" class="router-link sidebar__link">
         <div class="sidebar__link-items">
           <div class="sidebar__items-left">
             <img src="../assets/icons/inbox.svg" alt="Inbox" />
-            <span>Все задачи</span>
+            <span>Планируемые</span>
           </div>
-          <span>1</span>
+          <span></span>
         </div>
       </router-link>
       <router-link to="/marks" class="router-link sidebar__link">
         <div class="sidebar__link-items">
           <div class="sidebar__items-left">
             <img src="../assets/icons/inbox.svg" alt="Inbox" />
-            <span>Все задачи</span>
+            <span>Метки</span>
           </div>
-          <span>1</span>
+          <span></span>
         </div>
       </router-link>
     </ul>
@@ -44,6 +44,11 @@
 <script>
 export default {
   name: "SideBar",
+  props: {
+    taskCount: {
+      type: Number,
+    },
+  },
 };
 </script>
 
@@ -51,7 +56,7 @@ export default {
 .sidebar {
   width: 276px;
   transform: translateX(0px);
-  height: calc(100vh - 50px);
+  height: calc(100vh - 100px);
   background-color: #f1f1f1;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
   padding: $pg * 5;
@@ -70,7 +75,7 @@ export default {
       height: 24px;
     }
     &:hover {
-      background-color: #cecece;
+      background-color: $sidebar-link;
     }
   }
   &__link-items {
@@ -91,6 +96,6 @@ export default {
 }
 
 .router-link-active {
-  background-color: #cecece;
+  background-color: $sidebar-link;
 }
 </style>
