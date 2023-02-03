@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   name: "TaskEditor",
   emits: ["closeTask", "addTask"],
@@ -45,10 +46,19 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["addNewTask"]),
     closeTask() {
       this.$emit("closeTask");
     },
     addTask() {
+      this.addNewTask({
+        id: Date.now(),
+        title: this.task.title,
+        body: this.task.body,
+        date: this.task.date,
+        priority: this.task.priority,
+        mark: this.task.mark,
+      });
       if (this.task.title !== "") {
         this.$emit("addTask", this.task);
         this.closeTask();
@@ -112,7 +122,7 @@ export default {
   }
   & .submit {
     color: white;
-    background-color: #abafff;
+    background-color: $additional-color;
     -ms-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;

@@ -1,20 +1,10 @@
 <template>
   <top-bar @showModal="showModal" />
   <div class="main-content">
-    <side-bar :taskCount="tasks.length" />
-    <div v-for="(task, index) in tasks" :key="index">
-      <ul>
-        <li>{{ task.title }}</li>
-        <li>{{ task.body }}</li>
-      </ul>
-    </div>
+    <side-bar />
     <router-view />
   </div>
-  <modal-vue
-    v-if="isShowModal"
-    @modalHidden="modalHidden"
-    @addTask="addTask"
-  ></modal-vue>
+  <modal-vue v-if="isShowModal" @modalHidden="modalHidden"></modal-vue>
 </template>
 
 <script>
@@ -26,7 +16,6 @@ export default {
   data() {
     return {
       isShowModal: false,
-      tasks: [],
     };
   },
   methods: {
@@ -35,9 +24,6 @@ export default {
     },
     modalHidden() {
       this.isShowModal = false;
-    },
-    addTask(el) {
-      this.tasks.push(el);
     },
   },
 };

@@ -7,7 +7,7 @@
             <img src="../assets/icons/inbox.svg" alt="Inbox" />
             <span>Все задачи</span>
           </div>
-          <span>{{ taskCount ? taskCount : "" }}</span>
+          <span>{{ this.allTasksLength }}</span>
         </div>
       </router-link>
       <router-link to="/today" class="router-link sidebar__link">
@@ -42,13 +42,10 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "SideBar",
-  props: {
-    taskCount: {
-      type: Number,
-    },
-  },
+  computed: mapGetters(["allTasksLength"]),
 };
 </script>
 

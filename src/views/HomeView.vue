@@ -1,13 +1,15 @@
 <template>
   <div class="home">
     <h1>Домашняя страница</h1>
+    <tasks-list />
   </div>
 </template>
 
 <script>
+import TasksList from "@/components/UI/TasksList";
 export default {
   name: "HomeView",
-  components: {},
+  components: { TasksList },
 };
 </script>
 
