@@ -2,7 +2,7 @@
   <div class="top-bar">
     <div class="top-bar-inner">
       <div class="top-bar-inner__left">
-        <div class="top-bar-inner__main-menu">
+        <div class="top-bar-inner__main-menu" @click="showSidebar">
           <div class="top-bar-inner__main-menu_btn"></div>
         </div>
         <router-link class="top-bar-inner__home-btn" to="/">
@@ -53,6 +53,9 @@ export default {
     showModal() {
       this.$emit("showModal");
     },
+    showSidebar() {
+      this.$emit("showSidebar");
+    },
   },
 };
 </script>
@@ -81,7 +84,7 @@ export default {
   &__main-menu {
     display: flex;
     align-items: center;
-    width: 25px;
+
     height: 25px;
     cursor: pointer;
     padding: $pg;

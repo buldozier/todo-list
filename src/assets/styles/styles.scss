@@ -21,6 +21,8 @@ body {
 }
 
 .container {
+  padding: 0 $pg * 5;
   margin: 0 auto;
+  max-width: $max-width;
 }
 

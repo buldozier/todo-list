@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" :class="isSidebarShow">
     <ul class="sidebar__links">
       <router-link to="/" class="router-link sidebar__link">
         <div class="sidebar__link-items">
@@ -45,18 +45,31 @@
 import { mapGetters } from "vuex";
 export default {
   name: "SideBar",
-  computed: mapGetters(["allTasksLength"]),
+  props: {
+    isShowSidebar: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  computed: {
+    ...mapGetters(["allTasksLength"]),
+    isSidebarShow() {
+      return this.isShowSidebar ? "" : "sidebar-hidden";
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .sidebar {
-  width: 276px;
-  transform: translateX(0px);
+  position: fixed;
+  left: 0;
+  width: 300px;
   height: calc(100vh - 100px);
   background-color: #f1f1f1;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
   padding: $pg * 5;
+  transition: transform 0.3s ease-in-out;
   &__links {
     display: flex;
     flex-direction: column;
@@ -85,6 +98,10 @@ export default {
     display: flex;
     gap: 10px;
   }
+}
+
+.sidebar-hidden {
+  transform: translateX(-350px);
 }
 
 .router-link {

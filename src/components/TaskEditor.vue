@@ -7,10 +7,16 @@
             placeholder="Название задачи"
             type="text"
             v-model="task.title"
+            class="task-title"
           />
         </div>
         <div class="task-editor__task-body">
-          <input placeholder="Описание" type="text" v-model="task.body" />
+          <input
+            placeholder="Описание"
+            type="text"
+            v-model="task.body"
+            class="task-body"
+          />
         </div>
       </div>
     </div>
@@ -32,7 +38,7 @@
 import { mapMutations } from "vuex";
 export default {
   name: "TaskEditor",
-  emits: ["closeTask", "addTask"],
+  emits: ["closeTask"],
   data() {
     return {
       task: {
@@ -51,16 +57,15 @@ export default {
       this.$emit("closeTask");
     },
     addTask() {
-      this.addNewTask({
-        id: Date.now(),
-        title: this.task.title,
-        body: this.task.body,
-        date: this.task.date,
-        priority: this.task.priority,
-        mark: this.task.mark,
-      });
       if (this.task.title !== "") {
-        this.$emit("addTask", this.task);
+        this.addNewTask({
+          id: Date.now(),
+          title: this.task.title,
+          body: this.task.body,
+          date: this.task.date,
+          priority: this.task.priority,
+          mark: this.task.mark,
+        });
         this.closeTask();
       }
     },
@@ -85,7 +90,6 @@ export default {
 
 <style lang="scss" scoped>
 .task-editor {
-  padding: $pg * 5;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   & input {
     width: 100%;
@@ -93,6 +97,14 @@ export default {
     border: none;
     background-color: transparent;
   }
+}
+
+.task-title {
+  padding: $pg * 5 $pg * 5 $pg;
+}
+
+.task-body {
+  padding: $pg $pg * 5 $pg * 5;
 }
 
 .task-buttons {

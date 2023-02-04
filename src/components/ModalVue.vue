@@ -1,7 +1,7 @@
 <template>
   <div class="modal" ref="modal" @mousedown="modalHidden">
     <div class="modal-inner" @mousedown.stop>
-      <task-editor @closeTask="modalHidden" @addTask="addTask" />
+      <task-editor @closeTask="modalHidden" />
     </div>
   </div>
 </template>
@@ -10,7 +10,7 @@
 import TaskEditor from "@/components/TaskEditor";
 export default {
   name: "ModalVue",
-  emits: ["modalHidden", "addTask"],
+  emits: ["modalHidden"],
   components: { TaskEditor },
 
   data() {
@@ -19,9 +19,6 @@ export default {
   methods: {
     modalHidden() {
       this.$emit("modalHidden");
-    },
-    addTask(el) {
-      this.$emit("addTask", el);
     },
   },
   mounted() {
