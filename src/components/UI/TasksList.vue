@@ -1,11 +1,6 @@
 <template>
   <ul class="task-list">
-    <task-item
-      v-for="(task, index) in allTasks"
-      :key="index"
-      :task="task"
-      @completeTask="completeTask"
-    />
+    <task-item v-for="(task, index) in allTasks" :key="index" :task="task" />
   </ul>
 </template>
 
@@ -15,12 +10,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "TasksList",
   components: { TaskItem },
-  emits: ["completeTask"],
-  methods: {
-    completeTask(index) {
-      this.$emit("completeTask", index);
-    },
-  },
+  methods: {},
   computed: mapGetters(["allTasks"]),
 };
 </script>

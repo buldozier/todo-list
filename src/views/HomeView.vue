@@ -14,18 +14,15 @@
 
 <script>
 import TasksList from "@/components/UI/TasksList";
+import { mapGetters } from "vuex";
+
 export default {
   name: "HomeView",
-  props: {
-    isShowSidebar: {
-      type: Boolean,
-      required: true,
-    },
-  },
   components: { TasksList },
   computed: {
+    ...mapGetters(["showSidebar"]),
     isSidebarShow() {
-      return this.isShowSidebar ? "" : "sidebar-hidden";
+      return this.showSidebar ? "" : "sidebar-hidden";
     },
   },
 };

@@ -45,16 +45,10 @@
 import { mapGetters } from "vuex";
 export default {
   name: "SideBar",
-  props: {
-    isShowSidebar: {
-      type: Boolean,
-      required: true,
-    },
-  },
   computed: {
-    ...mapGetters(["allTasksLength"]),
+    ...mapGetters(["allTasksLength", "showSidebar"]),
     isSidebarShow() {
-      return this.isShowSidebar ? "" : "sidebar-hidden";
+      return this.showSidebar ? "" : "sidebar-hidden";
     },
   },
 };
@@ -70,6 +64,7 @@ export default {
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.3);
   padding: $pg * 5;
   transition: transform 0.3s ease-in-out;
+  z-index: 10;
   &__links {
     display: flex;
     flex-direction: column;

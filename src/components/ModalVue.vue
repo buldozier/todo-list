@@ -8,23 +8,25 @@
 
 <script>
 import TaskEditor from "@/components/TaskEditor";
+import { mapMutations } from "vuex";
+
 export default {
   name: "ModalVue",
-  emits: ["modalHidden"],
   components: { TaskEditor },
 
   data() {
     return {};
   },
   methods: {
+    ...mapMutations(["changeModalShow"]),
     modalHidden() {
-      this.$emit("modalHidden");
+      this.changeModalShow();
     },
   },
   mounted() {
     setTimeout(() => {
       this.$refs.modal.classList.add("opacity");
-    }, 1);
+    }, 0);
   },
 };
 </script>

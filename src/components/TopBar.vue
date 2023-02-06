@@ -33,9 +33,7 @@
             src="../assets/icons/plus.svg"
             alt="Добавить задачу"
           />
-        </div>
-        <div class="top-bar-inner__settings">
-          <img src="../assets/icons/gear.svg" alt="" />
+          <div>Добавить задачу</div>
         </div>
       </div>
     </div>
@@ -43,6 +41,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   name: "TopBar",
   components: {},
@@ -50,11 +49,16 @@ export default {
     return {};
   },
   methods: {
+    ...mapMutations(["changeModalShow", "changeSidebarShow"]),
+    taskDone(id) {
+      this.completeTask(id);
+    },
     showModal() {
+      this.changeModalShow();
       this.$emit("showModal");
     },
     showSidebar() {
-      this.$emit("showSidebar");
+      this.changeSidebarShow();
     },
   },
 };
@@ -118,8 +122,10 @@ export default {
     }
   }
   &__home-btn,
-  &__add-task,
-  &__settings {
+  &__add-task {
+    display: flex;
+    gap: 10px;
+    color: $background-color;
     padding: $pg;
     border-radius: 5px;
     cursor: pointer;
