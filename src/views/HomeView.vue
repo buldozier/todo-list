@@ -6,7 +6,7 @@
     </div>
     <div class="container">
       <div class="home">
-        <tasks-list class="tasks-list" />
+        <tasks-list />
       </div>
     </div>
   </div>
@@ -54,8 +54,5 @@ export default {
   display: flex;
   flex-direction: column;
   max-width: $max-width;
-}
-
-.tasks-list {
 }
 </style>

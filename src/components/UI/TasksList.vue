@@ -21,5 +21,6 @@ ul.task-list {
   flex-direction: column;
   gap: 25px;
   margin-top: $mn * 5 !important;
+  margin-bottom: $mn * 5 !important;
 }
 </style>

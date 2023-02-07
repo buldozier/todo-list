@@ -75,6 +75,25 @@
             ></path>
           </svg>
           <div>{{ markTitle }}</div>
+          <button
+            v-if="task.marks.length !== 0"
+            @click.stop="setDefaultMarkValue"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="inherit"
+                d="M11.854 11.854a.5.5 0 000-.708L8.707 8l3.147-3.146a.5.5 0 00-.708-.708L8 7.293 4.854 4.146a.5.5 0 10-.708.708L7.293 8l-3.147 3.146a.5.5 0 00.708.708L8 8.707l3.146 3.147a.5.5 0 00.708 0z"
+                fill="black"
+              ></path>
+            </svg>
+          </button>
         </div>
         <div class="popper" @click.stop v-if="popperView">
           <input
@@ -93,7 +112,7 @@
                       d="M5.914 11.086l4.5-4.5A2 2 0 0 1 11.828 6H16a2 2 0 0 1 2 2v4.172a2 2 0 0 1-.586 1.414l-4.5 4.5a2 2 0 0 1-2.828 0l-4.172-4.172a2 2 0 0 1 0-2.828zM14 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
                     ></path>
                   </svg>
-                  <div>{{ mark }}</div>
+                  {{ mark }}
                 </label>
                 <input
                   :id="mark"
@@ -110,12 +129,7 @@
             v-if="isMarkAvailable"
             @click="addMark(markValue)"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-            >
+            <svg width="20" height="20" viewBox="0 0 20 20">
               <path
                 fill="currentColor"
                 fill-rule="nonzero"
@@ -170,6 +184,7 @@ export default {
     },
     addTask() {
       if (this.task.title !== "") {
+        console.log(new Date(this.task.date));
         this.addNewTask({
           id: Date.now(),
           title: this.task.title,
@@ -183,6 +198,11 @@ export default {
     },
     setDefaultSelect() {
       this.task.priority = "";
+    },
+    setDefaultMarkValue() {
+      this.popperView = false;
+      this.task.marks = [];
+      console.log(123);
     },
     popperChangeView() {
       this.popperView = !this.popperView;
@@ -209,8 +229,6 @@ export default {
       const isMarkExist = this.allMarks.filter(
         (t) => t === this.markValue
       ).length;
-      console.log(isMarkExist);
-
       return this.markValue !== "" && !isMarkExist;
     },
   },
@@ -251,13 +269,13 @@ export default {
         }
         let length = this.task.marks.length;
         if (length === 0) {
-          this.markTitle = "Марки";
+          this.markTitle = "Метки";
         } else if (length === 1) {
-          this.markTitle = length + " марка";
+          this.markTitle = length + " метка";
         } else if (length > 1 && length < 5) {
-          this.markTitle = length + " марки";
+          this.markTitle = length + " метки";
         } else if (length >= 5 && length < 10) {
-          this.markTitle = length + " марок";
+          this.markTitle = length + " меток";
         } else {
           this.markTitle = length;
         }
@@ -363,6 +381,18 @@ input[type="date"] {
 
 .mark {
   position: relative;
+
+  & button {
+    top: 3px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: $pg/2;
+    border-radius: 30%;
+    &:hover {
+      background: #bebebe;
+    }
+  }
 }
 
 .popper {
@@ -379,9 +409,11 @@ input[type="date"] {
     & label {
       display: flex;
       flex-grow: 1;
+      cursor: pointer;
     }
     & input {
       width: 16px;
+      cursor: pointer;
     }
   }
   & input {
