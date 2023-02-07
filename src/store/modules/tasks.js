@@ -7,10 +7,14 @@ export default {
       { id: 4, title: "Четвертая задача", body: "Четвертая задача" },
       { id: 5, title: "Пятая задача", body: "Пятая задача" },
     ],
+    marks: ["Прочитать", "Сходить", "Посмотреть"],
   },
   getters: {
     allTasks(state) {
       return state.tasks;
+    },
+    allMarks(state) {
+      return state.marks;
     },
     allTasksLength(state, getters) {
       let tasksLength = getters.allTasks.length;
@@ -31,6 +35,9 @@ export default {
     completeTask(state, id) {
       const currentIndex = state.tasks.findIndex((el) => el.id === id);
       state.tasks.splice(currentIndex, 1);
+    },
+    addNewMark(state, newMark) {
+      state.marks.push(newMark);
     },
   },
   actions: {},

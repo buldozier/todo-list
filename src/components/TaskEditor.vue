@@ -23,17 +23,6 @@
       <div class="task-editor__additional">
         <div class="date">
           <input type="date" v-model="task.date" placeholder="Выбор даты" />
-          <!--          <svg-->
-          <!--            xmlns="http://www.w3.org/2000/svg"-->
-          <!--            width="16"-->
-          <!--            height="16"-->
-          <!--            viewBox="0 0 16 16"-->
-          <!--          >-->
-          <!--            <path-->
-          <!--              fill="currentColor"-->
-          <!--              d="M12 2a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V4a2 2 0 012-2h8zm0 1H4a1 1 0 00-1 1v8a1 1 0 001 1h8a1 1 0 001-1V4a1 1 0 00-1-1zm-1.25 7a.75.75 0 110 1.5.75.75 0 010-1.5zm.75-5a.5.5 0 110 1h-7a.5.5 0 010-1h7z"-->
-          <!--            ></path>-->
-          <!--          </svg>-->
         </div>
         <div class="priority" ref="priority" :style="{ color: priorityColor }">
           <svg class="priority__svg" width="16" height="16" viewBox="0 0 16 16">
@@ -76,7 +65,7 @@
             </svg>
           </button>
         </div>
-        <div class="mark">
+        <div class="mark" @click.stop="popperChangeView">
           <svg width="16" height="16" viewBox="0 0 16 16">
             <path
               fill-rule="evenodd"
@@ -85,7 +74,56 @@
               fill="currentColor"
             ></path>
           </svg>
-          <div>Метка</div>
+          <div>{{ markTitle }}</div>
+        </div>
+        <div class="popper" @click.stop v-if="popperView">
+          <input
+            type="text"
+            placeholder="Введите название метки"
+            v-model="markValue"
+          />
+          <ul v-if="allFilteredMarks.length !== 0">
+            <li v-for="(mark, index) in allFilteredMarks" :key="index">
+              <div class="popper__mark">
+                <label :for="mark">
+                  <svg width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                      fill="gray"
+                      fill-rule="nonzero"
+                      d="M5.914 11.086l4.5-4.5A2 2 0 0 1 11.828 6H16a2 2 0 0 1 2 2v4.172a2 2 0 0 1-.586 1.414l-4.5 4.5a2 2 0 0 1-2.828 0l-4.172-4.172a2 2 0 0 1 0-2.828zM14 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"
+                    ></path>
+                  </svg>
+                  <div>{{ mark }}</div>
+                </label>
+                <input
+                  :id="mark"
+                  :value="mark"
+                  type="checkbox"
+                  v-model="task.marks"
+                />
+              </div>
+            </li>
+          </ul>
+          <div class="no-filtered-marks" v-else>Метка не найдена</div>
+          <button
+            class="popper__add-mark"
+            v-if="isMarkAvailable"
+            @click="addMark(markValue)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill="currentColor"
+                fill-rule="nonzero"
+                d="M12.5 6a.5.5 0 0 1 .5.5V12h5.5a.5.5 0 1 1 0 1H13v5.5a.5.5 0 1 1-1 0V13H6.5a.5.5 0 1 1 0-1H12V6.5a.5.5 0 0 1 .5-.5z"
+              ></path>
+            </svg>
+            <button>Создать "{{ markValue }}"</button>
+          </button>
         </div>
       </div>
     </div>
@@ -104,7 +142,7 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 export default {
   name: "TaskEditor",
   emits: ["closeTask"],
@@ -115,14 +153,17 @@ export default {
         body: "",
         date: "",
         priority: "",
-        mark: null,
+        marks: [],
       },
       isSubmitActive: false,
       priorityColor: "black",
+      popperView: false,
+      markTitle: "Марки",
+      markValue: "",
     };
   },
   methods: {
-    ...mapMutations(["addNewTask"]),
+    ...mapMutations(["addNewTask", "addNewMark"]),
     closeTask() {
       this.task.date = "";
       this.$emit("closeTask");
@@ -135,7 +176,7 @@ export default {
           body: this.task.body,
           date: this.task.date ? new Date(this.task.date) : "",
           priority: this.task.priority,
-          mark: this.task.mark,
+          marks: this.task.marks,
         });
         this.closeTask();
       }
@@ -143,13 +184,34 @@ export default {
     setDefaultSelect() {
       this.task.priority = "";
     },
+    popperChangeView() {
+      this.popperView = !this.popperView;
+      this.markValue = "";
+    },
+    addMark(val) {
+      this.addNewMark(val);
+    },
   },
   computed: {
+    ...mapGetters(["allMarks"]),
+    allFilteredMarks() {
+      return this.allMarks.filter((mark) =>
+        mark.toLowerCase().includes(this.markValue.toLowerCase())
+      );
+    },
     isSubmiteActive() {
       return this.task.title !== "" ? "active-submit" : "";
     },
     isValueSelected() {
       return this.task.priority !== "" ? "value-selected" : "";
+    },
+    isMarkAvailable() {
+      const isMarkExist = this.allMarks.filter(
+        (t) => t === this.markValue
+      ).length;
+      console.log(isMarkExist);
+
+      return this.markValue !== "" && !isMarkExist;
     },
   },
   mounted() {
@@ -159,6 +221,11 @@ export default {
       }
       if (e.code === "Escape") {
         this.closeTask();
+      }
+    });
+    document.addEventListener("click", () => {
+      if (this.popperView === true) {
+        this.popperChangeView();
       }
     });
   },
@@ -181,6 +248,18 @@ export default {
           default:
             this.priorityColor = "black";
             break;
+        }
+        let length = this.task.marks.length;
+        if (length === 0) {
+          this.markTitle = "Марки";
+        } else if (length === 1) {
+          this.markTitle = length + " марка";
+        } else if (length > 1 && length < 5) {
+          this.markTitle = length + " марки";
+        } else if (length >= 5 && length < 10) {
+          this.markTitle = length + " марок";
+        } else {
+          this.markTitle = length;
         }
       },
       deep: true,
@@ -205,6 +284,7 @@ export default {
     padding: 0 $pg * 5;
     font-size: $fz;
     margin-bottom: $mn * 2;
+    position: relative;
     & .date,
     .priority,
     .mark {
@@ -279,6 +359,72 @@ input[type="date"] {
       background: #bebebe;
     }
   }
+}
+
+.mark {
+  position: relative;
+}
+
+.popper {
+  position: absolute;
+  top: 100%;
+  right: 130px;
+  min-width: 200px;
+  border: 1px solid rgba(128, 128, 128, 0.7);
+  background-color: $background-color;
+  border-radius: 5px;
+  transition: all 0.2s ease-in-out;
+  &__mark {
+    display: flex;
+    & label {
+      display: flex;
+      flex-grow: 1;
+    }
+    & input {
+      width: 16px;
+    }
+  }
+  & input {
+    padding: $pg * 2;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.7);
+  }
+  &__add-mark {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    gap: 10px;
+    padding: $pg;
+    &:hover {
+      background-color: rgba(128, 128, 128, 0.4);
+    }
+  }
+  & ul {
+    margin: 0;
+    //max-height: 76px;
+    overflow-y: scroll;
+    padding: $pg $pg * 2;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.7);
+  }
+  & li {
+    margin-bottom: $mn;
+    list-style: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.popper-hidden {
+  display: none;
+}
+
+.no-filtered-marks {
+  padding: $pg * 2;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.7);
 }
 
 .task-title {

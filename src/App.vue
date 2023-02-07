@@ -1,5 +1,5 @@
 <template>
-  <top-bar @showSidebar="showSidebar" />
+  <top-bar />
   <div class="main-content">
     <side-bar />
     <router-view />
@@ -16,15 +16,10 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   components: { TopBar, SideBar, ModalVue },
   data() {
-    return {
-      isShowSidebar: true,
-    };
+    return {};
   },
   methods: {
     ...mapMutations(["changeModalShow"]),
-    showSidebar() {
-      this.isShowSidebar = !this.isShowSidebar;
-    },
     modalHidden() {
       this.changeModalShow();
     },
