@@ -26,3 +26,14 @@ body {
   max-width: $max-width;
 }
 
+.header {
+  padding: $pg * 10 $pg * 5 $pg * 2;
+  margin: 0 auto;
+  max-width: $max-width;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: $background-color;
+}
+

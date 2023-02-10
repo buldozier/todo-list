@@ -7,7 +7,7 @@ export default {
         body: "Друзья позвали в кино завтра",
         date: new Date("2023-02-06"),
         priority: "p2",
-        marks: ["Сходить", "Посмотреть"],
+        marks: ["Сходить", "Посмотреть", "Сделать"],
       },
       {
         id: 2,
@@ -59,12 +59,38 @@ export default {
     allMarks(state) {
       return state.marks;
     },
+    allTodayTasks(state) {
+      return state.tasks.filter(
+        (t) => t.date !== "" && t.date - new Date() < 0
+      );
+    },
+    allFutureTasks(state) {
+      return state.tasks.filter(
+        (t) => t.date !== "" && t.date - new Date() > 0
+      );
+    },
+    tasksByMark: (state) => (mark) => {
+      return state.tasks.filter((t) => t.marks.includes(mark));
+    },
     allTasksLength(state, getters) {
       let tasksLength = getters.allTasks.length;
       if (tasksLength > 0) {
         return getters.allTasks.length;
       }
     },
+    allTodayTasksLength(state, getters) {
+      let tasksLength = getters.allTodayTasks.length;
+      if (tasksLength > 0) {
+        return getters.allTodayTasks.length;
+      }
+    },
+    allFutureTasksLength(state, getters) {
+      let tasksLength = getters.allFutureTasks.length;
+      if (tasksLength > 0) {
+        return getters.allFutureTasks.length;
+      }
+    },
+
     searchTask(state, req) {
       return state.tasks.filter((task) =>
         task.title.toLowerCase().includes(req.toLowerCase())

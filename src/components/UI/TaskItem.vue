@@ -38,15 +38,20 @@
         </div>
         <div class="task__marks">
           <div v-for="(mark, index) in task.marks" :key="index">
-            <svg width="16" height="16" viewBox="0 0 16 16">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M7.828 2H12a2 2 0 012 2v4.172a2 2 0 01-.586 1.414l-4 4a2 2 0 01-2.828 0L2.414 9.414a2 2 0 010-2.828l4-4A2 2 0 017.828 2zm0 1a1 1 0 00-.707.293l-4 4a1 1 0 000 1.414l4.172 4.172a1 1 0 001.414 0l4-4A1 1 0 0013 8.172V4a1 1 0 00-1-1H7.828zM10 7a1 1 0 100-2 1 1 0 000 2z"
-                fill="currentColor"
-              ></path>
-            </svg>
-            <span> {{ mark }}</span>
+            <router-link
+              class="task__marks_link"
+              :to="{ path: `/marks/${mark}` }"
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16">
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M7.828 2H12a2 2 0 012 2v4.172a2 2 0 01-.586 1.414l-4 4a2 2 0 01-2.828 0L2.414 9.414a2 2 0 010-2.828l4-4A2 2 0 017.828 2zm0 1a1 1 0 00-.707.293l-4 4a1 1 0 000 1.414l4.172 4.172a1 1 0 001.414 0l4-4A1 1 0 0013 8.172V4a1 1 0 00-1-1H7.828zM10 7a1 1 0 100-2 1 1 0 000 2z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+              <span> {{ mark }}</span>
+            </router-link>
           </div>
         </div>
       </div>
@@ -58,7 +63,6 @@
 import { mapMutations } from "vuex";
 export default {
   name: "TaskItem",
-  emits: ["completeTask"],
   data() {
     return {
       priorityColor: "",
@@ -187,9 +191,16 @@ export default {
     display: flex;
     gap: 10px;
     & div {
+    }
+    &_link {
       display: flex;
-      gap: 5px;
       align-items: center;
+      gap: 3px;
+      text-decoration: none;
+      color: inherit;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

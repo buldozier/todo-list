@@ -2,7 +2,9 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import TodayView from "@/views/TodayView";
 import PlanningVue from "@/views/PlanningVue";
+import MarksLayout from "@/views/MarksLayout";
 import MarksVue from "@/views/MarksVue";
+import MarkVue from "@/views/MarkVue";
 
 const routes = [
   {
@@ -22,8 +24,20 @@ const routes = [
   },
   {
     path: "/marks",
-    name: "marks",
-    component: MarksVue,
+    name: "marksLayout",
+    component: MarksLayout,
+    children: [
+      {
+        path: "",
+        name: "marks",
+        component: MarksVue,
+      },
+      {
+        path: ":id",
+        name: "mark",
+        component: MarkVue,
+      },
+    ],
   },
 ];
 

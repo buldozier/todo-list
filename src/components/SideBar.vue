@@ -13,25 +13,25 @@
       <router-link to="/today" class="router-link sidebar__link">
         <div class="sidebar__link-items">
           <div class="sidebar__items-left">
-            <img src="../assets/icons/inbox.svg" alt="Inbox" />
+            <img src="../assets/icons/today.svg" alt="Inbox" />
             <span>Сегодня</span>
           </div>
-          <span></span>
+          <span>{{ this.allTodayTasksLength }}</span>
         </div>
       </router-link>
       <router-link to="/planning" class="router-link sidebar__link">
         <div class="sidebar__link-items">
           <div class="sidebar__items-left">
-            <img src="../assets/icons/inbox.svg" alt="Inbox" />
+            <img src="../assets/icons/future.svg" alt="Inbox" />
             <span>Планируемые</span>
           </div>
-          <span></span>
+          <span>{{ this.allFutureTasksLength }}</span>
         </div>
       </router-link>
       <router-link to="/marks" class="router-link sidebar__link">
         <div class="sidebar__link-items">
           <div class="sidebar__items-left">
-            <img src="../assets/icons/inbox.svg" alt="Inbox" />
+            <img src="../assets/icons/bookmarks.svg" alt="Inbox" />
             <span>Метки</span>
           </div>
           <span></span>
@@ -46,7 +46,12 @@ import { mapGetters } from "vuex";
 export default {
   name: "SideBar",
   computed: {
-    ...mapGetters(["allTasksLength", "showSidebar"]),
+    ...mapGetters([
+      "allTasksLength",
+      "allTodayTasksLength",
+      "allFutureTasksLength",
+      "showSidebar",
+    ]),
     isSidebarShow() {
       return this.showSidebar ? "" : "sidebar-hidden";
     },

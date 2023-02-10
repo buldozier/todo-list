@@ -1,17 +1,19 @@
 <template>
   <ul class="task-list">
-    <task-item v-for="(task, index) in allTasks" :key="index" :task="task" />
+    <task-item v-for="(task, index) in taskArray" :key="index" :task="task" />
   </ul>
 </template>
 
 <script>
 import TaskItem from "@/components/UI/TaskItem";
-import { mapGetters } from "vuex";
 export default {
   name: "TasksList",
   components: { TaskItem },
-  methods: {},
-  computed: mapGetters(["allTasks"]),
+  props: {
+    taskArray: {
+      type: Array,
+    },
+  },
 };
 </script>
 
