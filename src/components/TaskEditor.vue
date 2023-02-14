@@ -22,7 +22,12 @@
       </div>
       <div class="task-editor__additional">
         <div class="date">
-          <input type="date" v-model="task.date" placeholder="Выбор даты" />
+          <input
+            type="date"
+            :min="dateToday"
+            v-model="task.date"
+            placeholder="Выбор даты"
+          />
         </div>
         <div class="priority" ref="priority" :style="{ color: priorityColor }">
           <svg class="priority__svg" width="16" height="16" viewBox="0 0 16 16">
@@ -144,12 +149,22 @@
     <div class="task-buttons">
       <button class="close" @click="closeTask"><span>Отмена</span></button>
       <button
+        v-if="getTaskId === undefined"
         @click="addTask"
         class="submit"
         ref="submit"
         :class="isSubmiteActive"
       >
         <span>Добавить задачу</span>
+      </button>
+      <button
+        v-else
+        @click="editCurrentTask"
+        class="submit"
+        ref="submit"
+        :class="isSubmiteActive"
+      >
+        <span>Редактировать задачу</span>
       </button>
     </div>
   </div>
@@ -162,6 +177,7 @@ export default {
   emits: ["closeTask"],
   data() {
     return {
+      taskID: null,
       task: {
         title: "",
         body: "",
@@ -177,16 +193,28 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(["addNewTask", "addNewMark"]),
+    ...mapMutations(["addNewTask", "addNewMark", "editTask"]),
     closeTask() {
       this.task.date = "";
       this.$emit("closeTask");
     },
     addTask() {
       if (this.task.title !== "") {
-        console.log(new Date(this.task.date));
         this.addNewTask({
           id: Date.now(),
+          title: this.task.title,
+          body: this.task.body,
+          date: this.task.date ? new Date(this.task.date) : "",
+          priority: this.task.priority,
+          marks: this.task.marks,
+        });
+        this.closeTask();
+      }
+    },
+    editCurrentTask() {
+      if (this.task.title !== "") {
+        this.editTask({
+          id: this.task.id,
           title: this.task.title,
           body: this.task.body,
           date: this.task.date ? new Date(this.task.date) : "",
@@ -202,7 +230,6 @@ export default {
     setDefaultMarkValue() {
       this.popperView = false;
       this.task.marks = [];
-      console.log(123);
     },
     popperChangeView() {
       this.popperView = !this.popperView;
@@ -211,9 +238,35 @@ export default {
     addMark(val) {
       this.addNewMark(val);
     },
+    keyupListener(event) {
+      if (this.task.title !== "" && event.code === "Enter") {
+        if (this.getTaskId === undefined) {
+          this.addTask();
+        } else {
+          this.editTask({
+            id: this.task.id,
+            title: this.task.title,
+            body: this.task.body,
+            date: this.task.date ? new Date(this.task.date) : "",
+            priority: this.task.priority,
+            marks: this.task.marks,
+          });
+          this.closeTask();
+        }
+      }
+      if (event.code === "Escape") {
+        this.closeTask();
+      }
+    },
+    clickListener() {
+      console.log(123);
+      if (this.popperView === true) {
+        this.popperChangeView();
+      }
+    },
   },
   computed: {
-    ...mapGetters(["allMarks"]),
+    ...mapGetters(["allMarks", "getTaskId", "taskById"]),
     allFilteredMarks() {
       return this.allMarks.filter((mark) =>
         mark.toLowerCase().includes(this.markValue.toLowerCase())
@@ -231,43 +284,68 @@ export default {
       ).length;
       return this.markValue !== "" && !isMarkExist;
     },
+    dateToday() {
+      const d = new Date();
+      let day = d.getDate();
+      let month = d.getMonth() + 1;
+      const year = d.getFullYear();
+      if (day < 10) {
+        day = `0${day}`;
+      }
+      if (month < 10) {
+        month = `0${month}`;
+      }
+      return `${year}-${month}-${day}`;
+    },
   },
   mounted() {
-    document.addEventListener("keyup", (e) => {
-      if (this.task.title !== "" && e.code === "Enter") {
-        this.addTask();
+    document.addEventListener("keyup", this.keyupListener);
+    document.addEventListener("click", this.clickListener);
+    let taskId = this.getTaskId;
+    if (taskId) {
+      const task = this.taskById(taskId);
+      this.task.id = task.id;
+      this.task.title = task.title;
+      this.task.body = task.body;
+      this.task.date = task.date ? dateValidator(task.date) : "";
+      this.task.priority = task.priority;
+      this.task.marks = task.marks;
+    }
+    function dateValidator(d) {
+      let day = d.getDate();
+      let month = d.getMonth() + 1;
+      const year = d.getFullYear();
+      if (day < 10) {
+        day = `0${day}`;
       }
-      if (e.code === "Escape") {
-        this.closeTask();
+      if (month < 10) {
+        month = `0${month}`;
       }
-    });
-    document.addEventListener("click", () => {
-      if (this.popperView === true) {
-        this.popperChangeView();
-      }
-    });
+      return `${year}-${month}-${day}`;
+    }
+  },
+  unmounted() {
+    document.removeEventListener("keyup", this.keyupListener);
+    document.removeEventListener("click", this.clickListener);
   },
   watch: {
     task: {
       handler(val) {
         switch (val.priority) {
           case "p1":
-            console.log(this.priorityColor);
             this.priorityColor = "red";
             break;
           case "p2":
-            console.log(this.priorityColor);
             this.priorityColor = "orange";
             break;
           case "p3":
-            console.log(this.priorityColor);
             this.priorityColor = "blue";
             break;
           default:
             this.priorityColor = "black";
             break;
         }
-        let length = this.task.marks.length;
+        const length = this.task.marks.length;
         if (length === 0) {
           this.markTitle = "Метки";
         } else if (length === 1) {
@@ -461,6 +539,7 @@ input[type="date"] {
 
 .task-title {
   padding: $pg * 5 $pg * 5 $pg;
+  font-weight: bold;
 }
 
 .task-body {

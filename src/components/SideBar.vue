@@ -7,7 +7,7 @@
             <img src="../assets/icons/inbox.svg" alt="Inbox" />
             <span>Все задачи</span>
           </div>
-          <span>{{ this.allTasksLength }}</span>
+          <span>{{ this.allTasks.length ? this.allTasks.length : "" }}</span>
         </div>
       </router-link>
       <router-link to="/today" class="router-link sidebar__link">
@@ -16,7 +16,11 @@
             <img src="../assets/icons/today.svg" alt="Inbox" />
             <span>Сегодня</span>
           </div>
-          <span>{{ this.allTodayTasksLength }}</span>
+          <span>{{
+            this.allOverdueTasks.length + this.allTodayTasks.length
+              ? this.allOverdueTasks.length + this.allTodayTasks.length
+              : ""
+          }}</span>
         </div>
       </router-link>
       <router-link to="/planning" class="router-link sidebar__link">
@@ -25,7 +29,9 @@
             <img src="../assets/icons/future.svg" alt="Inbox" />
             <span>Планируемые</span>
           </div>
-          <span>{{ this.allFutureTasksLength }}</span>
+          <span>{{
+            this.allFutureTasks.length ? this.allFutureTasks.length : ""
+          }}</span>
         </div>
       </router-link>
       <router-link to="/marks" class="router-link sidebar__link">
@@ -34,7 +40,6 @@
             <img src="../assets/icons/bookmarks.svg" alt="Inbox" />
             <span>Метки</span>
           </div>
-          <span></span>
         </div>
       </router-link>
     </ul>
@@ -47,9 +52,10 @@ export default {
   name: "SideBar",
   computed: {
     ...mapGetters([
-      "allTasksLength",
-      "allTodayTasksLength",
-      "allFutureTasksLength",
+      "allTasks",
+      "allOverdueTasks",
+      "allTodayTasks",
+      "allFutureTasks",
       "showSidebar",
     ]),
     isSidebarShow() {

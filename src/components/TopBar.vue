@@ -44,18 +44,10 @@
 import { mapMutations } from "vuex";
 export default {
   name: "TopBar",
-  components: {},
-  data() {
-    return {};
-  },
   methods: {
     ...mapMutations(["changeModalShow", "changeSidebarShow"]),
-    taskDone(id) {
-      this.completeTask(id);
-    },
     showModal() {
       this.changeModalShow();
-      this.$emit("showModal");
     },
     showSidebar() {
       this.changeSidebarShow();

@@ -13,10 +13,6 @@ import { mapMutations } from "vuex";
 export default {
   name: "ModalVue",
   components: { TaskEditor },
-
-  data() {
-    return {};
-  },
   methods: {
     ...mapMutations(["changeModalShow"]),
     modalHidden() {

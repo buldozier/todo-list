@@ -13,19 +13,10 @@
 import TopBar from "@/components/TopBar";
 import SideBar from "@/components/SideBar";
 import ModalVue from "@/components/ModalVue";
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   components: { TopBar, SideBar, ModalVue },
-  data() {
-    return {};
-  },
-  methods: {
-    ...mapMutations(["changeModalShow"]),
-    modalHidden() {
-      this.changeModalShow();
-    },
-  },
   computed: {
     ...mapGetters(["showModal", "showSidebar"]),
     isSidebarShow() {

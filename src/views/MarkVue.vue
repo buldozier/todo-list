@@ -1,9 +1,15 @@
 <template>
   <div>
-    <h1 class="header">{{ this.mark }}</h1>
+    <div class="header mark-header">
+      <router-link to="/marks">
+        <img src="@/assets/icons/arrow.svg" alt="Назад" />
+      </router-link>
+      <h1>
+        {{ this.mark }}
+      </h1>
+    </div>
 
     <div class="container">
-      <router-link to="/marks">Назад</router-link>
       <tasks-list
         v-if="tasksByMark(this.mark).length !== 0"
         :taskArray="tasksByMark(this.mark)"
@@ -36,4 +42,23 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.mark-header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  & img {
+    width: 25px;
+    height: 25px;
+    padding: $pg;
+    border-radius: 5px;
+    opacity: 0.6;
+    transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+      opacity: 1;
+    }
+  }
+}
+</style>

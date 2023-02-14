@@ -1,5 +1,5 @@
 <template>
-  <li class="task" ref="task">
+  <li class="task" ref="task" :class="setPriorityColor">
     <button
       class="task__complete"
       @click="taskDone(task.id)"
@@ -56,6 +56,11 @@
         </div>
       </div>
     </div>
+    <div class="edit-btn">
+      <button class="edit-btn__img" @click="editTask(task.id)">
+        <img src="@/assets/icons/edit.svg" alt="Редактировать" />
+      </button>
+    </div>
   </li>
 </template>
 
@@ -92,7 +97,10 @@ export default {
     },
     taskDate() {
       const oneDay = 86400000;
-      const date = this.task.date - new Date();
+      const date =
+        +this.task.date +
+        new Date(this.task.date).getTimezoneOffset() * 60000 -
+        new Date();
       let message;
       if (date < -oneDay) {
         message = `Просрочено (${this.task.date.toLocaleDateString("ru-RU", {
@@ -116,7 +124,10 @@ export default {
     },
     setDateColor() {
       const oneDay = 86400000;
-      const date = this.task.date - new Date();
+      const date =
+        +this.task.date +
+        new Date(this.task.date).getTimezoneOffset() * 60000 -
+        new Date();
       let color = "";
       if (date < -oneDay) {
         color = "red";
@@ -131,13 +142,16 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["completeTask"]),
+    ...mapMutations(["completeTask", "changeModalShow"]),
     taskDone(id) {
       this.$refs.task.classList.add("task-unmounted");
       setTimeout(() => {
         this.completeTask(id);
         this.$refs.task.classList.remove("task-unmounted");
       }, 120);
+    },
+    editTask(id) {
+      this.changeModalShow(id);
     },
   },
 };
@@ -208,5 +222,36 @@ export default {
 .task-unmounted {
   opacity: 0;
   transform: scale(0.95);
+}
+
+.edit-btn {
+  display: flex;
+  margin-left: auto;
+  margin-bottom: auto;
+  &__img {
+    width: 28px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+  & img {
+    width: 18px;
+    height: 18px;
+    padding: $pg;
+  }
+}
+
+.red {
+  box-shadow: 0 0 5px 1px red;
+}
+
+.orange {
+  box-shadow: 0 0 5px 1px orange;
+}
+
+.blue {
+  box-shadow: 0 0 5px 1px blue;
 }
 </style>

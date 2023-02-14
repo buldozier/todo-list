@@ -1,7 +1,6 @@
 <template>
   <div class="header">
     <h1>Все задачи</h1>
-    <p></p>
   </div>
   <div class="container">
     <div class="home">
