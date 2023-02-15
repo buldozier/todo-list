@@ -3,20 +3,23 @@
     <div class="task-editor">
       <div class="task-editor__content">
         <div class="task-editor__task-header">
-          <input
-            autofocus
+          <textarea
             placeholder="Название задачи"
-            type="text"
             v-model="task.title"
             class="task-title"
-          />
+            rows="1"
+            @input="resizeTextArea"
+            ref="titleArea"
+          ></textarea>
         </div>
         <div class="task-editor__task-body">
-          <input
+          <textarea
             placeholder="Описание"
-            type="text"
             v-model="task.body"
-            class="task-body"
+            class="task-body second-area"
+            rows="1"
+            @input="resizeTextArea"
+            ref="bodyArea"
           />
         </div>
       </div>
@@ -259,10 +262,14 @@ export default {
       }
     },
     clickListener() {
-      console.log(123);
       if (this.popperView === true) {
         this.popperChangeView();
       }
+    },
+    resizeTextArea(event) {
+      event.target.style.height = "auto";
+      let scHeight = event.target.scrollHeight;
+      event.target.style.height = `${scHeight}px`;
     },
   },
   computed: {
@@ -297,6 +304,10 @@ export default {
       }
       return `${year}-${month}-${day}`;
     },
+  },
+  updated() {
+    this.$refs.titleArea.style.height = `${this.$refs.titleArea.scrollHeight}px`;
+    this.$refs.bodyArea.style.height = `${this.$refs.bodyArea.scrollHeight}px`;
   },
   mounted() {
     document.addEventListener("keyup", this.keyupListener);
@@ -367,12 +378,21 @@ export default {
 <style lang="scss" scoped>
 .task-editor {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  & input {
+  & textarea {
     box-sizing: border-box;
     width: 100%;
+    height: 57px;
+    max-height: 200px;
     outline: none;
     border: none;
     background-color: transparent;
+    resize: none;
+    &.second-area {
+      height: 47px;
+    }
+    &::-webkit-scrollbar {
+      width: 0;
+    }
   }
   &__additional {
     display: flex;
@@ -400,6 +420,11 @@ export default {
       -moz-user-select: none;
       -webkit-user-select: none;
       user-select: none;
+      & input {
+        box-sizing: border-box;
+        border: none;
+        background-color: transparent;
+      }
       &:hover {
         opacity: 1;
         background-color: #e1e1e1;

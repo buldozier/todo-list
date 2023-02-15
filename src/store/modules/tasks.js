@@ -56,6 +56,11 @@ export default {
     allTasks(state) {
       return state.tasks;
     },
+    allTasksFilteredByName(state) {
+      return state.tasks.sort((a, b) => {
+        return a.title > b.title ? 1 : -1;
+      });
+    },
     allMarks(state) {
       return state.marks;
     },
@@ -90,11 +95,6 @@ export default {
     },
     taskById: (state) => (id) => {
       return state.tasks.find((t) => t.id === id);
-    },
-    searchTask(state, req) {
-      return state.tasks.filter((task) =>
-        task.title.toLowerCase().includes(req.toLowerCase())
-      );
     },
   },
   mutations: {

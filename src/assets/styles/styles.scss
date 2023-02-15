@@ -27,8 +27,10 @@ body {
 }
 
 .header {
+  display: flex;
   padding: $pg * 10 $pg * 5 $pg * 2;
   margin: 0 auto;
+  align-items: center;
   max-width: $max-width;
   justify-content: space-between;
   position: sticky;

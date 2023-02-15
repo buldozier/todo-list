@@ -166,8 +166,14 @@ export default {
   border-radius: 10px;
   background-color: #fafafa;
   transition: all 0.2s ease-in-out;
+  &__content {
+    width: calc(100% - 70px);
+  }
   &__title {
+    width: 100%;
     font-weight: 500;
+    text-overflow: ellipsis;
+
     overflow-wrap: break-word;
   }
   &__complete {
@@ -187,7 +193,10 @@ export default {
     }
   }
   &__body {
+    width: 100%;
     font-size: $fz;
+    text-overflow: ellipsis;
+
     overflow-wrap: break-word;
   }
   &__bottom {
