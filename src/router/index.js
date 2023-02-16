@@ -8,6 +8,12 @@ import MarkVue from "@/views/MarkVue";
 
 const routes = [
   {
+    path: "/:searchText",
+    redirect: (to) => {
+      return { path: "/", query: { q: to.params.searchText } };
+    },
+  },
+  {
     path: "/",
     name: "home",
     component: HomeView,
