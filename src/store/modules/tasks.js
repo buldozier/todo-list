@@ -3,23 +3,23 @@ export default {
     tasks: [
       {
         id: 1,
-        title: "Сходить в кино",
-        body: "Друзья позвали в кино завтра",
+        title: "Do something nice for someone I care about",
+        body: "Take cat on a walk",
         date: new Date("2023-02-11"),
         priority: "p2",
         marks: ["Сходить", "Посмотреть", "Сделать"],
       },
       {
         id: 2,
-        title: "Доделать представление задач",
-        body: "Добавить отображение даты и метки",
+        title: "Memorize the fifty states and their capitals",
+        body: "Go to the gym",
         date: new Date("2023-02-12"),
         priority: "p3",
         marks: ["Сделать"],
       },
       {
         id: 3,
-        title: "Сделать отображение других страниц",
+        title: "Watch a classic movie",
         body: "",
         date: new Date("2023-02-13"),
         priority: "p1",
@@ -27,15 +27,16 @@ export default {
       },
       {
         id: 4,
-        title: "Сделать поиск по задачам",
-        body: "По заголовкам",
+        title:
+          "Contribute code or a monetary donation to an open-source software project",
+        body: "Create a cookbook with favorite recipes",
         date: new Date("2023-02-14"),
         priority: "",
         marks: ["Сделать"],
       },
       {
         id: 5,
-        title: "Если останется желание, сделать адаптив для мобилки",
+        title: "Solve a Rubik's cube",
         body: "",
         date: new Date("2023-02-15"),
         priority: "",
@@ -43,8 +44,8 @@ export default {
       },
       {
         id: 6,
-        title: "JIJA EZ",
-        body: "EZ EZ EZ",
+        title: "Bake pastries for me and neighbor",
+        body: "Go see a Broadway production",
         date: "",
         priority: "",
         marks: ["Сделать"],
@@ -56,10 +57,55 @@ export default {
     allTasks(state) {
       return state.tasks;
     },
-    allTasksFilteredByName(state) {
-      return state.tasks.sort((a, b) => {
-        return a.title > b.title ? 1 : -1;
+    allTasksFilteredByName: (state) => (name, order) => {
+      const newAarray = state.tasks.map((t) => {
+        if (t.date !== "") {
+          t.date = +t.date;
+        }
+        return JSON.parse(JSON.stringify(t));
       });
+
+      newAarray.forEach((t) => {
+        if (t.date !== "") {
+          t.date = new Date(t.date);
+        }
+      });
+
+      if (name === "Имя") {
+        newAarray.sort((a, b) => {
+          return a.title > b.title ? 1 : -1;
+        });
+      }
+
+      if (name === "Срок выполнения") {
+        newAarray.sort((a, b) => {
+          if (a.date !== "") {
+            return a.date > b.date ? 1 : -1;
+          }
+        });
+      }
+
+      if (name === "Приоритет") {
+        newAarray
+          .sort((a, b) => {
+            if (a.priority !== "") {
+              return a.priority > b.priority ? 1 : -1;
+            }
+          })
+          .reverse();
+      }
+
+      if (name === "Default") {
+        newAarray.sort((a, b) => {
+          return a.id > b.id ? 1 : -1;
+        });
+      }
+
+      if (order === "По убыванию") {
+        newAarray.reverse();
+      }
+
+      return newAarray;
     },
     allMarks(state) {
       return state.marks;
@@ -99,7 +145,6 @@ export default {
   },
   mutations: {
     addNewTask(state, newTask) {
-      console.log(newTask);
       state.tasks.unshift(newTask);
     },
     editTask(state, task) {

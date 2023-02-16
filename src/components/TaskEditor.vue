@@ -322,7 +322,8 @@ export default {
       this.task.priority = task.priority;
       this.task.marks = task.marks;
     }
-    function dateValidator(d) {
+    function dateValidator(date) {
+      const d = new Date(date);
       let day = d.getDate();
       let month = d.getMonth() + 1;
       const year = d.getFullYear();

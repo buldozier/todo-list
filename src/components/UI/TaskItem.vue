@@ -103,10 +103,13 @@ export default {
         new Date();
       let message;
       if (date < -oneDay) {
-        message = `Просрочено (${this.task.date.toLocaleDateString("ru-RU", {
-          day: "2-digit",
-          month: "2-digit",
-        })})`;
+        message = `Просрочено (${new Date(this.task.date).toLocaleDateString(
+          "ru-RU",
+          {
+            day: "2-digit",
+            month: "2-digit",
+          }
+        )})`;
       }
       if (date < 0 && date >= -oneDay) {
         message = "Сегодня";
@@ -115,7 +118,7 @@ export default {
         message = "Завтра";
       }
       if (date > oneDay) {
-        message = this.task.date.toLocaleDateString("ru-RU", {
+        message = new Date(this.task.date).toLocaleDateString("ru-RU", {
           day: "2-digit",
           month: "2-digit",
         });

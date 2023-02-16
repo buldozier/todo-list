@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
   name: "SortingVue",
   data() {
@@ -62,6 +64,7 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["changeSortingValue", "changeOrderValue"]),
     changePopperView(active) {
       if (active === 1) {
         this.isSortingPopperShow = !this.isSortingPopperShow;
@@ -82,13 +85,13 @@ export default {
     },
     setSortingValue(value) {
       this.sortingValue = value;
-      this.$emit("sortingValue", value);
+      this.changeSortingValue(value);
       this.changePopperView(1);
     },
 
     setOrderValue(value) {
       this.orderValue = value;
-      this.$emit("orderValue", value);
+      this.changeOrderValue(value);
       this.changePopperView(2);
     },
     selectedList(value) {

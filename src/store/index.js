@@ -6,6 +6,8 @@ export default createStore({
     isModalShow: false,
     taskId: "",
     isSidebarShow: true,
+    sortingValue: "Дата добавления",
+    orderValue: "По возрастанию",
   },
   getters: {
     showModal(state) {
@@ -17,6 +19,12 @@ export default createStore({
     getTaskId(state) {
       return state.taskId;
     },
+    getSortingValue(state) {
+      return state.sortingValue;
+    },
+    getOrderValue(state) {
+      return state.orderValue;
+    },
   },
   mutations: {
     changeModalShow(state, id) {
@@ -24,8 +32,11 @@ export default createStore({
       state.taskId = id;
       if (state.isModalShow === false) state.taskId = "";
     },
-    changeSidebarShow(state) {
-      state.isSidebarShow = !state.isSidebarShow;
+    changeSortingValue(state, value) {
+      state.sortingValue = value;
+    },
+    changeOrderValue(state, value) {
+      state.orderValue = value;
     },
   },
   actions: {},

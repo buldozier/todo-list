@@ -1,6 +1,6 @@
 <template>
   <ul class="task-list">
-    <task-item v-for="(task, index) in taskArray" :key="index" :task="task" />
+    <task-item v-for="task in taskArray" :key="task.id" :task="task" />
   </ul>
 </template>
 

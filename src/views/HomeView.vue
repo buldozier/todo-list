@@ -37,15 +37,25 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["allTasks", "allTasksFilteredByName"]),
+    ...mapGetters([
+      "allTasks",
+      "allTasksFilteredByName",
+      "getSortingValue",
+      "getOrderValue",
+    ]),
     tasksArray() {
-      switch (this.sortingValue) {
-        case "Дата добавления":
-          return this.allTasks;
+      switch (this.getSortingValue) {
         case "Имя":
-          return this.allTasksFilteredByName;
+          return this.allTasksFilteredByName("Имя", this.getOrderValue);
+        case "Срок выполнения":
+          return this.allTasksFilteredByName(
+            "Срок выполнения",
+            this.getOrderValue
+          );
+        case "Приоритет":
+          return this.allTasksFilteredByName("Приоритет", this.getOrderValue);
         default:
-          return this.allTasks;
+          return this.allTasksFilteredByName("Default", this.getOrderValue);
       }
     },
   },
