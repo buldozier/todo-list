@@ -424,6 +424,7 @@ export default {
       & input {
         box-sizing: border-box;
         border: none;
+        outline: none;
         background-color: transparent;
       }
       &:hover {
@@ -503,11 +504,20 @@ input[type="date"] {
   position: absolute;
   top: 100%;
   right: 130px;
-  min-width: 200px;
+  min-width: 220px;
   border: 1px solid rgba(128, 128, 128, 0.7);
   background-color: $background-color;
   border-radius: 5px;
   transition: all 0.2s ease-in-out;
+
+  & input {
+    box-sizing: border-box;
+    padding: $pg * 2;
+    width: 100%;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.7);
+  }
   &__mark {
     display: flex;
     & label {
@@ -520,10 +530,7 @@ input[type="date"] {
       cursor: pointer;
     }
   }
-  & input {
-    padding: $pg * 2;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.7);
-  }
+
   &__add-mark {
     box-sizing: border-box;
     display: flex;

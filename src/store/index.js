@@ -38,6 +38,9 @@ export default createStore({
     changeOrderValue(state, value) {
       state.orderValue = value;
     },
+    changeSidebarShow(state) {
+      state.isSidebarShow = !state.isSidebarShow;
+    },
   },
   actions: {},
   modules: { tasks },
